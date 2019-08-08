@@ -1,5 +1,5 @@
 const { exec } = require('child-process-promise');
-const fomatList = (list) => {
+const formatList = (list) => {
   let temp = list.split('┤')[1].split('└')[0].replace(/\n/g, '').split('│')
   temp.shift()
   let services = []
@@ -24,7 +24,7 @@ const fomatList = (list) => {
 }
 const getList = () => {
   return exec(`pm2 list|grep -v 'pm2 show'`).then(async result => {
-    let list = fomatList(result.stdout)
+    let list = formatList(result.stdout)
     let promiseArr = list.map(async data => {
       const pid = data.pid
       return getPort(pid).then(port => {
