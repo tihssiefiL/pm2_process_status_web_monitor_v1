@@ -25,15 +25,20 @@ const formatList = (list) => {
 const getList = () => {
   return exec(`pm2 list|grep -v 'pm2 show'`).then(async result => {
     let list = formatList(result.stdout)
-    let promiseArr = list.map(async data => {
-      const pid = data.pid
-      return getPort(pid).then(port => {
-        data.port = port
-        return data
-      })
+    let promiseArr = []
+    list.map(data => {
+      const pid = new Number(data.pid)
+      if (pid != 0) {
+        promiseArr.push(getPort(pid).then(port => {
+          data.port = port
+          return data
+        }))
+      }
+      else return
     })
     return Promise.all(promiseArr).then(res => {
-      return res 
+      console.log(res)
+      return res
     })
   }).catch(err => {
     throw {
@@ -44,9 +49,12 @@ const getList = () => {
   })
 }
 const getPort = (pid) => {
-  return exec(`netstat -nap | grep ${pid} | grep :::`).then(result => {
-    console.log(result)
-    let port = result.stdout.split(':::')[1]
+  pid = pid.toString()
+  console.log(pid)
+  return exec(`netstat -nap | grep ${pid} | grep LISTEN`).then(result => {
+    result = result.stdout
+    const reg = /:\d/
+    const port = reg.exec(result)[0].split(':')[1]
     return port
   }).catch(err => {
     throw {
@@ -56,14 +64,4 @@ const getPort = (pid) => {
     }
   })
 }
-// ┌──────────┬────┬─────────┬──────┬───────┬────────┬─────────┬────────┬─────┬───────────┬──────┬──────────┐
-// │ App name │ id │ version │ mode │ pid   │ status │ restart │ uptime │ cpu │ mem       │ user │ watching │
-// ├──────────┼────┼─────────┼──────┼───────┼────────┼─────────┼────────┼─────┼───────────┼──────┼──────────┤
-// │ server1  │ 0  │ N / A   │ fork │ 11235 │ online │ 3418    │ 0s     │ 0 %  │ 24.7 MB  │ root │ disabled │
-// │ server2  │ 1  │ N / A   │ fork │ 11205 │ online │ 3405    │ 1s     │ 0 %  │ 25.8 MB  │ root │ disabled │
-// └──────────┴────┴─────────┴──────┴───────┴────────┴─────────┴────────┴─────┴───────────┴──────┴──────────┘
-
-// getPort(14160).then(port => {
-//   console.log(port)
-// })
 module.exports = getList
