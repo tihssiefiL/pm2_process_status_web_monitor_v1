@@ -53,7 +53,7 @@ const getPort = (pid) => {
   console.log(pid)
   return exec(`netstat -nap | grep ${pid} | grep LISTEN`).then(result => {
     result = result.stdout
-    const reg = /:\d/
+    const reg = /:\d+/
     const port = reg.exec(result)[0].split(':')[1]
     return port
   }).catch(err => {
