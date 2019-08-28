@@ -1,7 +1,7 @@
 {
-  "name": "pm2_process_status_web_monitor_v1",
+  "name": "pm2_process_status_web_monitor_api",
   "version": "0.0.1",
-  "description": "pm2_process_status_web_monit_api",
+  "description": "help u monit ur pm2 tasks",
   "main": "index.js",
   "dependencies": {
     "child-process-promise": "^2.2.1"
