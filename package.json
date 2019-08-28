@@ -1,0 +1,27 @@
+{
+  "name": "pm2_process_status_web_monitor_v1",
+  "version": "0.0.1",
+  "description": "pm2_process_status_web_monit_api",
+  "main": "index.js",
+  "dependencies": {
+    "child-process-promise": "^2.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tihssiefiL/pm2_process_status_web_monitor_v1.git"
+  },
+  "keywords": [
+    "pm2",
+    "monit"
+  ],
+  "author": "tihssiefiL",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tihssiefiL/pm2_process_status_web_monitor_v1/issues"
+  },
+  "homepage": "https://github.com/tihssiefiL/pm2_process_status_web_monitor_v1#readme"
+}
